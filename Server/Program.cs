@@ -2,30 +2,36 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Server.Data;
+using Server.Services;
 using Shared.Models;
+using Shared.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpClient();
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
     {
         In = ParameterLocation.Header,
-        Name = "Authurization",
+        Name = "Authorization",
         Type = SecuritySchemeType.ApiKey
     }));
 
-// all service registeration
+
+// all service registration
+builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
 
 
 // connection strting 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
 if (connectionString == null)
-    throw new Exception("Invalid connections strinig");
+    throw new Exception("Invalid connections string");
 builder.Services.AddDbContext<AcademicProjectDbContext>(
     options =>
         options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));

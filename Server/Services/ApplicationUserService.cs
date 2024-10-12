@@ -5,7 +5,7 @@ using Shared.Services.Contracts;
 using Shared.Utils;
 using Server.Data;
 
-namespace Shared.Services;
+namespace Server.Services;
 
 public class ApplicationUserService(
     UserManager<ApplicationUser> userManager, 
@@ -13,7 +13,7 @@ public class ApplicationUserService(
     AcademicProjectDbContext context, 
     HttpClient httpClient, 
     IHttpContextAccessor httpContextAccessor
-    ) : IApplicationnUserService
+    ) : IApplicationUserService
 {
     
     
@@ -90,6 +90,49 @@ public class ApplicationUserService(
 
     public async Task<ServiceResponse<Login>> LoginUser(Login user)
     {
-        throw new NotImplementedException();
+        // throw new NotImplementedException();
+        var response = new ServiceResponse<Login>();
+        var logUser = await userManager.FindByIdAsync(user.StudentId);
+
+        if (logUser == null)
+        {
+            response.Success = false;
+            response.Message = "User not found";
+            return response;
+        }
+        // Checking if the user is locked out
+        if (await userManager.IsLockedOutAsync(logUser))
+        {
+            response.Success = false;
+            response.Message = "User is locked out";
+            return response;
+        }
+        
+        // Check if the email is confirmed
+        if (!await userManager.IsEmailConfirmedAsync(logUser))
+        {
+            response.Success = false;
+            response.Message = "Email is not confirmed";
+            return response;
+        }
+        var result = await signInManager.PasswordSignInAsync(
+            userName: logUser.Email, 
+            password: user.Password, 
+            isPersistent: false, 
+            lockoutOnFailure: false
+        );
+        Console.Write("printing the result "+result);
+        if (result.Succeeded)
+        {
+            response.Success = true;
+            response.Message = "Login success";
+            return response;
+        }
+
+        response.Success = false;
+        response.Message = result.ToString();
+        return response;
+        
+        
     }
 }

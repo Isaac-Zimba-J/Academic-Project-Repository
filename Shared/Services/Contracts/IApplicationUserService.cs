@@ -3,7 +3,7 @@ using Shared.Utils;
 
 namespace Shared.Services.Contracts;
 
-public interface IApplicationnUserService
+public interface IApplicationUserService
 {
     Task<ServiceResponse<ApplicationUser>> GetUser();
     Task<ServiceResponse<ApplicationUser>> GetCurrentUser();

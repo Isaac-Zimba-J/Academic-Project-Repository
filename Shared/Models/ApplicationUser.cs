@@ -14,8 +14,8 @@ public class ApplicationUser : IdentityUser
     public string LastName { get; set; }
     public string? ProfileImageUrl { get; set; }
     public YearOfStudy YearOfStudy { get; set; }
-    public List<ProjectReport> SubmittedReports { get; set; }
-    public List<ProjectReport> ApprovedReports { get; set; }
+    public List<ProjectReport>? SubmittedReports { get; set; }
+    public List<ProjectReport>? ApprovedReports { get; set; }
 
 
 }
