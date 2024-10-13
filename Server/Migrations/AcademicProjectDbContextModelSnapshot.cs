@@ -259,7 +259,7 @@ namespace Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ProjectContributor");
+                    b.ToTable("ProjectContributors");
                 });
 
             modelBuilder.Entity("Shared.Models.ProjectGroup", b =>
@@ -270,9 +270,8 @@ namespace Server.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("Department")
+                        .HasColumnType("int");
 
                     b.Property<string>("GroupName")
                         .IsRequired()
@@ -283,7 +282,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProjectGroup");
+                    b.ToTable("ProjectGroups");
                 });
 
             modelBuilder.Entity("Shared.Models.ProjectReport", b =>
@@ -306,18 +305,17 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int?>("Department")
+                        .HasColumnType("int");
 
-                    b.Property<int>("GroupId")
+                    b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
                     b.Property<string>("PdfUrl")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("ProjectType")
+                    b.Property<int?>("ProjectType")
                         .HasColumnType("int");
 
                     b.Property<int?>("PublicationStatus")
@@ -347,7 +345,7 @@ namespace Server.Migrations
 
                     b.HasIndex("SubmitterId");
 
-                    b.ToTable("ProjectReport");
+                    b.ToTable("ProjectReports");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

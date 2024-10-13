@@ -1,8 +1,8 @@
 using Shared.Models;
+using Shared.Utils;
 
 namespace Shared.Services.Contracts;
 
-public interface IProjectReportService : IGenericBaseService<ProjectReport, string>
+public interface IProjectReportService : IGenericBaseService<ProjectReportDto, string>
 {
-    
 }

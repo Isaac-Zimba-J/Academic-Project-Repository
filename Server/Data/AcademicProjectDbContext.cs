@@ -10,6 +10,13 @@ public class AcademicProjectDbContext : IdentityDbContext<ApplicationUser>
     {
         
     }
+    
+    // DbSets
+    
+    public DbSet<ProjectGroup> ProjectGroups { get; set; }
+    public DbSet<ProjectReport> ProjectReports { get; set; }
+    public DbSet<ProjectContributor> ProjectContributors { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

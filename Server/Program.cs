@@ -22,10 +22,15 @@ builder.Services.AddSwaggerGen(options =>
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey
     }));
-
+builder.Services.AddAutoMapper(typeof(Program));
 
 // all service registration
 builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
+builder.Services.AddScoped<IProjectGroupService, ProjectGroupService>();
+builder.Services.AddScoped<IProjectReportService, ProjectReportService>();
+builder.Services.AddScoped<IProjectContributorService, ProjectContributorService>();
+
+
 
 
 // connection strting 
