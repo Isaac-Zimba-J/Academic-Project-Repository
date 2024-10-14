@@ -58,7 +58,6 @@ public class ApplicationUserService(
         var response = new ServiceResponse<Register>();
         var newUser = new ApplicationUser
         {
-            Id = user.StudentId,
             UserName = user.Email,
             Email = user.Email,
             StudentId = user.StudentId,
@@ -73,7 +72,8 @@ public class ApplicationUserService(
         {
             response.Success = true;
             response.Message = "User registered successfully";
-            
+            response.Data = user;
+            return response;
         }
         else
         {
@@ -98,6 +98,7 @@ public class ApplicationUserService(
         {
             response.Success = false;
             response.Message = "User not found";
+            
             return response;
         }
         // Checking if the user is locked out

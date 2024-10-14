@@ -5,17 +5,21 @@ namespace Shared.Models;
 
 public class ProjectContributor
 {
-    [Key]
     public string Id { get; set; }
+    
+    [Required]
     public string UserId { get; set; }
     [ForeignKey("UserId")]
-    public ApplicationUser User { get; set; }
-    public int ProjectReportId { get; set; }
+    public virtual ApplicationUser User { get; set; }
+    
+    public string ProjectReportId { get; set; }
     [ForeignKey("ProjectReportId")]
-    public ProjectReport ProjectReport { get; set; }
-    public int? ProjectGroupId { get; set; }
+    public virtual ProjectReport ProjectReport { get; set; }
+    
+    public string? ProjectGroupId { get; set; }
     [ForeignKey("ProjectGroupId")]
-    public ProjectGroup ProjectGroup { get; set; }
+    public virtual ProjectGroup? ProjectGroup { get; set; }
+    
+    [Required]
     public string ContributionDescription { get; set; }
-
 }

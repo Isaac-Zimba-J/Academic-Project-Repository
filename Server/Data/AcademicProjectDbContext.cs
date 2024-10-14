@@ -6,12 +6,7 @@ namespace Server.Data;
 
 public class AcademicProjectDbContext : IdentityDbContext<ApplicationUser>
 {
-    public AcademicProjectDbContext(DbContextOptions<AcademicProjectDbContext> options) : base(options)
-    {
-        
-    }
-    
-    // DbSets
+    public AcademicProjectDbContext(DbContextOptions<AcademicProjectDbContext> options) : base(options) { }
     
     public DbSet<ProjectGroup> ProjectGroups { get; set; }
     public DbSet<ProjectReport> ProjectReports { get; set; }
@@ -21,36 +16,38 @@ public class AcademicProjectDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure ApplicationUser to ProjectReport relationship
         modelBuilder.Entity<ApplicationUser>()
-            .HasMany<ProjectReport>(u => u.SubmittedReports)
+            .HasMany(u => u.SubmittedReports)
             .WithOne(r => r.Submitter)
             .HasForeignKey(r => r.SubmitterId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<ApplicationUser>()
-            .HasMany<ProjectReport>(u => u.ApprovedReports)
+            .HasMany(u => u.ApprovedReports)
             .WithOne(r => r.Approver)
             .HasForeignKey(r => r.ApproverId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Configure ProjectGroup to ProjectReport relationship
-        modelBuilder.Entity<ProjectGroup>()
-            .HasMany<ProjectReport>(g => g.Reports)
-            .WithOne(r => r.Group)
-            .HasForeignKey(r => r.Id) // Renamed foreign key property
+        modelBuilder.Entity<ApplicationUser>()
+            .HasMany(u => u.Contributions)
+            .WithOne(c => c.User)
+            .HasForeignKey(c => c.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Configure ProjectGroup to ProjectContributor relationship
         modelBuilder.Entity<ProjectGroup>()
-            .HasMany<ProjectContributor>(g => g.Members)
+            .HasMany(g => g.Reports)
+            .WithOne(r => r.Group)
+            .HasForeignKey(r => r.GroupId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<ProjectGroup>()
+            .HasMany(g => g.Members)
             .WithOne(c => c.ProjectGroup)
             .HasForeignKey(c => c.ProjectGroupId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Configure ProjectReport to ProjectContributor relationship
         modelBuilder.Entity<ProjectReport>()
-            .HasMany<ProjectContributor>(r => r.Contributors)
+            .HasMany(r => r.Contributors)
             .WithOne(c => c.ProjectReport)
             .HasForeignKey(c => c.ProjectReportId)
             .OnDelete(DeleteBehavior.Restrict);

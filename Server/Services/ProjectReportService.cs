@@ -43,7 +43,7 @@ public class ProjectReportService(AcademicProjectDbContext context, IMapper mapp
     {
         // throw new NotImplementedException();
         var response = new ServiceResponse<ProjectReportDto>();
-        var report = await context.ProjectReports.FirstOrDefaultAsync(report => report.Id == entity.Id);
+        var report = await context.ProjectReports.FindAsync(entity.Id);
         if (report == null)
         {
             response.Success = false;
