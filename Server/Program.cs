@@ -5,6 +5,7 @@ using Server.Data;
 using Server.Services;
 using Shared.Models;
 using Shared.Services.Contracts;
+using Shared.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
 builder.Services.AddScoped<IProjectGroupService, ProjectGroupService>();
 builder.Services.AddScoped<IProjectReportService, ProjectReportService>();
 builder.Services.AddScoped<IProjectContributorService, ProjectContributorService>();
+builder.Services.AddScoped<UploadService>();
 
 
 
@@ -59,7 +61,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapIdentityApi<ApplicationUser>();
-
+app.UseStaticFiles();
 app.UseAuthorization();
 
 app.MapControllers();
