@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Models;
 using Shared.Services.Contracts;
@@ -7,6 +8,7 @@ namespace Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Administrator")]
 public class ProjectGroupController(IProjectGroupService service) : Controller
 {
     // GET ALL GROUPS

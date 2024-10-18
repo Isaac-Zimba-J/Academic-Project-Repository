@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Shared.Models;
 
 namespace Server.Data;
 
-public class AcademicProjectDbContext : IdentityDbContext<ApplicationUser>
+public class AcademicProjectDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
 {
     public AcademicProjectDbContext(DbContextOptions<AcademicProjectDbContext> options) : base(options) { }
     

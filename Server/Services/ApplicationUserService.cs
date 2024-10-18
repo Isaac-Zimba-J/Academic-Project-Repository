@@ -12,7 +12,8 @@ public class ApplicationUserService(
     SignInManager<ApplicationUser> signInManager, 
     AcademicProjectDbContext context, 
     HttpClient httpClient, 
-    IHttpContextAccessor httpContextAccessor
+    IHttpContextAccessor httpContextAccessor,
+    RoleManager<IdentityRole> roleManager
     ) : IApplicationUserService
 {
     
@@ -135,5 +136,53 @@ public class ApplicationUserService(
         return response;
         
         
+    }
+
+    public async Task<ServiceResponse<ApplicationUser>> AssignRole(string studentId, string role)
+    {
+        var response = new ServiceResponse<ApplicationUser>();
+        var user = await userManager.FindByIdAsync(studentId);
+
+        if(user == null)
+            response.Success = false;
+            response.Message = "failed to asign role";
+        await userManager.AddToRoleAsync(user, role);
+
+        response.Success = true;
+        response.Message = "Role assigned";
+
+        return response;
+    }
+
+    public Task<ServiceResponse<IdentityRole>> RemoveRole(string studentId, string role)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ServiceResponse<IdentityRole>> AddRole(string role)
+    {
+        // throw new NotImplementedException();
+        var response = new ServiceResponse<IdentityRole>();
+        var newRole = new IdentityRole(role);
+        var result = await roleManager.CreateAsync(newRole);
+
+        if (result.Succeeded)
+        {
+            response.Success = true;
+            response.Message = "Role created successfully";
+            response.Data = newRole;
+            return response;
+        }
+        else
+        {
+            response.Success = false;
+            response.Message = "Failed to create role";
+            foreach (var error in result.Errors)
+            {
+                response.Message += error.Description;
+            }
+        }
+
+        return  response;
     }
 }

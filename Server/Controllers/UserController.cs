@@ -3,6 +3,7 @@ using Shared.Models;
 using Shared.Utils;
 using Server.Services;
 using Shared.Services.Contracts;
+using Microsoft.AspNetCore.Identity;
 
 namespace Server.Controllers;
 
@@ -29,6 +30,26 @@ public class UserController(IApplicationUserService service) : Controller
             return await service.LoginUser(user);
         }
 
+        return BadRequest();
+    }
+
+    [HttpPost("AssignRole")]
+    public async Task<ActionResult<ServiceResponse<ApplicationUser>>> AssignRole(string studentId, string role)
+    {
+        if (ModelState.IsValid)
+        {
+           return await service.AssignRole(studentId,role);
+        }
+        return BadRequest();
+    }
+
+    [HttpPost("AddRole")]
+    public async Task<ActionResult<ServiceResponse<IdentityRole>>> AddRole(string role)
+    {
+        if (ModelState.IsValid)
+        {
+            return await service.AddRole(role);
+        }
         return BadRequest();
     }
 }

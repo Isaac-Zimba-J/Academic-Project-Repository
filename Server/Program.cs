@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Server.Data;
@@ -11,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient();
+builder.Services.AddAuthorizationBuilder();
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
@@ -30,8 +32,8 @@ builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
 builder.Services.AddScoped<IProjectGroupService, ProjectGroupService>();
 builder.Services.AddScoped<IProjectReportService, ProjectReportService>();
 builder.Services.AddScoped<IProjectContributorService, ProjectContributorService>();
+// builder.Services.AddTransient<IEmailSender, MailSender>();
 builder.Services.AddScoped<UploadService>();
-
 
 
 
@@ -43,14 +45,36 @@ builder.Services.AddDbContext<AcademicProjectDbContext>(
     options =>
         options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-// boilerplate identity  stuff 
+// // boilerplate identity  stuff 
+// builder.Services.AddAuthorization();
+// builder.Services.AddAuthorizationBuilder();
+// builder.Services.AddIdentityApiEndpoints<ApplicationUser, IdentityRole>()
+//     .AddRoleManager<RoleManager<IdentityRole>>()
+//     .AddRoleStore<RoleStore<IdentityRole>>()
+//     .AddEntityFrameworkStores<AcademicProjectDbContext>();
+
+// boilerplate identity stuff 
+
+builder.Services.AddAuthorizationBuilder();
+// builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+//     .AddRoleManager<RoleManager<IdentityRole>>()
+//     .AddEntityFrameworkStores<AcademicProjectDbContext>()
+//     .AddDefaultTokenProviders()
+//     .AddApiEndpoints();
+
+builder.Services
+    .AddIdentityApiEndpoints<ApplicationUser>()
+    .AddRoles<IdentityRole>()
+    .AddRoleManager<RoleManager<IdentityRole>>()
+    .AddEntityFrameworkStores<AcademicProjectDbContext>()
+    .AddSignInManager()
+    .AddDefaultTokenProviders()
+    .AddApiEndpoints();
+
 builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<ApplicationUser>().AddEntityFrameworkStores<AcademicProjectDbContext>();
-
-
-
 
 var app = builder.Build();
+app.MapIdentityApi<ApplicationUser>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -60,10 +84,17 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.MapIdentityApi<ApplicationUser>();
+app.MapControllers();
 app.UseStaticFiles();
+
 app.UseAuthorization();
 
 app.MapControllers();
 
+
+//use authorization
+app.UseAuthorization();
+
 app.Run();
+
+
