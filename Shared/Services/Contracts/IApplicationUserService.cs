@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Shared.Models;
 using Shared.Utils;
 
@@ -14,5 +15,9 @@ public interface IApplicationUserService
     Task<ServiceResponse<ApplicationUser>> DeleteUser(string id);
     Task<ServiceResponse<Register>> RegisterUser(Register user);
     Task<ServiceResponse<Login>> LoginUser(Login user);
+    Task<ServiceResponse<ApplicationUser>> AssignRole(string studentId, string role);
+    Task<ServiceResponse<IdentityRole>> RemoveRole(string studentId, string role);
+    Task<ServiceResponse<IdentityRole>> AddRole( string role);
+    
     
 }

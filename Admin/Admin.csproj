@@ -11,4 +11,22 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.5" PrivateAssets="all"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="wwwroot\css-template\app.css" />
+      <None Include="wwwroot\css-template\app.css.map" />
+      <None Include="wwwroot\css\img\avatars\avatar-2.jpg" />
+      <None Include="wwwroot\css\img\avatars\avatar-3.jpg" />
+      <None Include="wwwroot\css\img\avatars\avatar-4.jpg" />
+      <None Include="wwwroot\css\img\avatars\avatar-5.jpg" />
+      <None Include="wwwroot\css\img\avatars\avatar.jpg" />
+      <None Include="wwwroot\css\img\icons\icon-48x48.png" />
+      <None Include="wwwroot\css\img\photos\unsplash-1.jpg" />
+      <None Include="wwwroot\css\img\photos\unsplash-2.jpg" />
+      <None Include="wwwroot\css\img\photos\unsplash-3.jpg" />
+      <None Include="wwwroot\fonts\.gitkeep" />
+      <None Include="wwwroot\js\app.js" />
+      <None Include="wwwroot\js\app.js.LICENSE.txt" />
+      <None Include="wwwroot\js\app.js.map" />
+    </ItemGroup>
+
 </Project>
